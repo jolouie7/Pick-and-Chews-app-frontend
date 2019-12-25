@@ -2,14 +2,11 @@ console.log("hello")
 const loginForm = document.querySelector("#login");
 console.log(loginForm)
 const loginPage = document.querySelector("#login-page");
-/* Main Page */
-// Title
-// Button to find restaurants
-// filters
-// embeded yelp
+
 const renderMainPage = `
   <div>
     <h1>Pick and Chews</h1>
+    <button>Hamburger Button</button>
     <button>Find Restaurants</button>
     <h3>Filters</h3>
     <div>
