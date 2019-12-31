@@ -8,18 +8,14 @@ const loginPage = document.querySelector("#login-page");
 const renderMainPage = `
 <div id="main">
 
-
   <div>
     <div id="mySidenav" class="sidenav">
       <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-      <a href="#">About</a>
-      <a href="#">Services</a>
-      <a href="#">Clients</a>
-      <a href="#">Contact</a>
+      <a href="#">Homepage</a>
+      <a href="#">Last Visted</a>
+      <a href="#">Top Favorited</a>
+      <a href="#" id="profile">Profile</a>
     </div>
-
-    <!-- Use any element to open the sidenav -->
-    <span onclick="openNav()">open</span>
 
     <h1>Pick and Chews</h1>
     <button>Hamburger Button</button>
@@ -56,9 +52,24 @@ const renderMainPage = `
 </div>
 `;
 
+// /* Toggle between showing and hiding the navigation menu links when the user clicks on the hamburger menu / bar icon */
+// function myFunction() {
+//   var x = document.getElementById("mySidenav");
+//   if (x.style.display === "block") {
+//     document.getElementById("mySidenav").style.width = "0";
+//     document.getElementById("main").style.marginLeft = "0";
+//     x.style.display = "none";
+//   } else {
+//     document.getElementById("mySidenav").style.width = "250px";
+//     document.getElementById("main").style.marginLeft = "250px";
+//     x.style.display = "block";
+//   }
+// }
+
 loginForm.addEventListener("submit", function(e) {
   loginPage.style.display = "none";
   document.querySelector("body").innerHTML = renderMainPage;
+  displayUserProfile();
 })
 /* 
 // const cors = "https://cors-anywhere.herokuapp.com"
@@ -117,65 +128,79 @@ $.ajax({
   url: myurl,
   headers: {
     Authorization: `Bearer ${apiKey}`,
-    "Retry-After": 120
+    "Retry-After": 1
   },
   method: "GET",
   dataType: "json",
   success: function(data) {
-    // Grab the results from the API JSON return
-    var totalresults = data.total;
-    // If our results are greater than 0, continue
-    if (totalresults > 0) {
-      // Display a header on the page with the number of results
-      $("#results").append(
-        "<h5>We discovered " + totalresults + " results!</h5>"
-      );
-      // Itirate through the JSON array of 'businesses' which was returned by the API
-      $.each(data.businesses, function(i, item) {
-        // Store each business's object in a variable
-        var id = item.id;
-        var alias = item.alias;
-        var phone = item.display_phone;
-        var image = item.image_url;
-        var name = item.name;
-        var rating = item.rating;
-        var reviewcount = item.review_count;
-        var address = item.location.address1;
-        var city = item.location.city;
-        var state = item.location.state;
-        var zipcode = item.location.zip_code;
-        // Append our result into our page
-        $("#results").append(
-          '<div id="' +
-            id +
-            '" style="margin-top:50px;margin-bottom:50px;"><img src="' +
-            image +
-            '" style="width:200px;height:150px;"><br>We found <b>' +
-            name +
-            "</b> (" +
-            alias +
-            ")<br>Business ID: " +
-            id +
-            "<br> Located at: " +
-            address +
-            " " +
-            city +
-            ", " +
-            state +
-            " " +
-            zipcode +
-            "<br>The phone number for this business is: " +
-            phone +
-            "<br>This business has a rating of " +
-            rating +
-            " with " +
-            reviewcount +
-            " reviews.</div>"
-        );
-      });
-    } else {
-      // If our results are 0; no businesses were returned by the JSON therefor we display on the page no results were found
-      $("#results").append("<h5>We discovered no results!</h5>");
-    }
+    console.log(data)
+    console.log(typeof data)
   }
+  // success: function(data) {
+  //   // Grab the results from the API JSON return
+  //   var totalresults = data.total;
+  //   // If our results are greater than 0, continue
+  //   if (totalresults > 0) {
+  //     // Display a header on the page with the number of results
+  //     $("#results").append(
+  //       "<h5>We discovered " + totalresults + " results!</h5>"
+  //     );
+  //     // Itirate through the JSON array of 'businesses' which was returned by the API
+  //     $.each(data.businesses, function(i, item) {
+  //       // Store each business's object in a variable
+  //       var id = item.id;
+  //       var alias = item.alias;
+  //       var phone = item.display_phone;
+  //       var image = item.image_url;
+  //       var name = item.name;
+  //       var rating = item.rating;
+  //       var reviewcount = item.review_count;
+  //       var address = item.location.address1;
+  //       var city = item.location.city;
+  //       var state = item.location.state;
+  //       var zipcode = item.location.zip_code;
+  //       // Append our result into our page
+  //       $("#results").append(
+  //         '<div id="' +
+  //           id +
+  //           '" style="margin-top:50px;margin-bottom:50px;"><img src="' +
+  //           image +
+  //           '" style="width:200px;height:150px;"><br>We found <b>' +
+  //           name +
+  //           "</b> (" +
+  //           alias +
+  //           ")<br>Business ID: " +
+  //           id +
+  //           "<br> Located at: " +
+  //           address +
+  //           " " +
+  //           city +
+  //           ", " +
+  //           state +
+  //           " " +
+  //           zipcode +
+  //           "<br>The phone number for this business is: " +
+  //           phone +
+  //           "<br>This business has a rating of " +
+  //           rating +
+  //           " with " +
+  //           reviewcount +
+  //           " reviews.</div>"
+  //       );
+  //     });
+  //   } else {
+  //     // If our results are 0; no businesses were returned by the JSON therefor we display on the page no results were found
+  //     $("#results").append("<h5>We discovered no results!</h5>");
+  //   }
+  // }
 });
+
+const renderProfile = `
+  <h1>Profile</h1>
+`
+function displayUserProfile() {
+  document.querySelector("#profile").addEventListener("click", function(e) {
+    // renderMainPage.style.display = "none";
+    document.querySelector("body").innerHTML = renderProfile;
+  })
+};
