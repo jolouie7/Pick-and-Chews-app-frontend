@@ -1,6 +1,71 @@
 
+button {
+    border-radius: 5px;
+    background-color: #FCC09E;
+    /* #fcb6b6 */
+    border: orange;
+    color: white;
+    padding: 10px;
+    font-size: 15px;
+}
+
+body {
+    background-color: #FFE9DD;
+    /* #faebda */
+    color: black;
+    font-family: 'Open Sans', sans-serif;
+}
+
+
 /* login page */
 
+#logo-div{
+    margin: auto;
+    padding: 50px;
+  }
+#login-page{
+    margin: auto;
+    width: 40%;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: white;
+  }
+
+#main-logo {
+    color: #FE7D3B;
+    /* #F39C12 */
+    font-size: 65px;
+    font-family: 'Unica One', cursive;
+    text-shadow: 2px 2px #FFC300;
+    text-decoration: none;
+    -webkit-text-stroke: 2px white;
+  -webkit-text-fill-color: white; /* Will override color (regardless of order) */
+  -webkit-text-stroke-width: 0.5px;
+  -webkit-text-stroke-color: #FE7D3B;
+}
+
+input[type=text] {
+    width: 80%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 1px solid grey;
+    color: black;
+    font-size: 15px;
+    border-radius: 7px;
+}
+
+button[type=submit] {
+        width: 80%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        box-sizing: border-box;
+        background-color: #FE7D3B;
+        border: orange;
+        color: white;
+        font-size: 15px;
+        border-radius: 7px;
+    }
 
 /* The side navigation menu */
 .sidenav {
@@ -10,7 +75,7 @@
   z-index: 1; /* Stay on top */
   top: 0; /* Stay at the top */
   left: 0;
-  background-color: #111; /* Black*/
+  background-color: #FCC09E;
   overflow-x: hidden; /* Disable horizontal scroll */
   padding-top: 60px; /* Place content 60px from the top */
   transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
@@ -21,7 +86,7 @@
   padding: 8px 8px 8px 32px;
   text-decoration: none;
   font-size: 25px;
-  color: #818181;
+  color: white;
   display: block;
   transition: 0.3s;
 }
@@ -40,47 +105,79 @@
   margin-left: 50px;
 }
 
-/* Style page content - use this if you want to push the page content to the right when you open the side navigation */
-#main {
-  transition: margin-left .5s;
-  padding: 20px;
-}
 
 /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
 @media screen and (max-height: 450px) {
-  .sidenav {padding-top: 15px;}
-  .sidenav a {font-size: 18px;}
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
 }
 
+/* Style page content - use this if you want to push the page content to the right when you open the side navigation */
+#main {
+    transition: margin-left .5s;
+    padding: 20px;
+}
+
+#main-content {
+    text-align: center;
+}
+
+
+
 #findRestaurant {
-    background-color:orange;
+    background-color:#FE7D3B;
     color: white;
-    border: 2px solid orange; /* Green */
+    border: 2px solid #FE7D3B;
     font-size: 20px;
     padding: 32px 16px;
     border-radius: 12px;
-    height: 100px;
-    width: 200px;
+    height: 200px;
+    width: 400px;
 }
 
 #findRestaurant:hover {
     box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
 }
 
+#filters-div {
+    border: 1px solid #FFDDC1;
+    width: 50%;
+    margin: auto;
+    background-color: white;
+    padding: 5px;
+}
+
+#results {
+    text-align: center;
+    border: 1px solid #FFDDC1;
+    width: 50%;
+    margin: auto;
+    background-color: white;
+    padding: 10px;
+}
+
+#foundRestaurant {
+    border: 1px solid #FFDDC1;
+    padding: 10px;
+    width: 60%;
+    display: inline-block;
+}
+
+/* hamburger navbar icon */
 .hamburger-icon {
     display: inline-block;
     cursor: pointer;
   }
-  
-  .bar1, .bar2, .bar3 {
+
+.bar1, .bar2, .bar3 {
     width: 35px;
     height: 5px;
     background-color: #333;
     margin: 6px 0;
     transition: 0.4s;
-  }
-  
-  .change .bar1 {
+}
+
+.change .bar1 {
     /* transform: rotate(-45deg) translate(-9px, 6px); */
     transform: rotate(-45deg) translate(-9px, 6px);
   }
