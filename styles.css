@@ -1,3 +1,7 @@
+
+/* login page */
+
+
 /* The side navigation menu */
 .sidenav {
   height: 100%; /* 100% Full-height */
@@ -47,3 +51,43 @@
   .sidenav {padding-top: 15px;}
   .sidenav a {font-size: 18px;}
 }
+
+#findRestaurant {
+    background-color:orange;
+    color: white;
+    border: 2px solid orange; /* Green */
+    font-size: 20px;
+    padding: 32px 16px;
+    border-radius: 12px;
+    height: 100px;
+    width: 200px;
+}
+
+#findRestaurant:hover {
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
+}
+
+.container {
+    display: inline-block;
+    cursor: pointer;
+  }
+  
+  .bar1, .bar2, .bar3 {
+    width: 35px;
+    height: 5px;
+    background-color: #333;
+    margin: 6px 0;
+    transition: 0.4s;
+  }
+  
+  .change .bar1 {
+    /* transform: rotate(-45deg) translate(-9px, 6px); */
+    transform: rotate(-45deg) translate(-9px, 6px);
+  }
+  
+  .change .bar2 {opacity: 0;}
+  
+  .change .bar3 {
+    /* transform: rotate(45deg) translate(-8px, -8px); */
+    transform: rotate(45deg) translate(-8px, -8px);
+  }
