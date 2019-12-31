@@ -6,18 +6,16 @@ function myFunction(x) {
     let navBar = document.getElementById("mySidenav");
     let mainBar = document.getElementById("main")
     
-    if(navBar.style.display === "block") {
+    if (navBar.style.display === "block") {
         navBar.style.display = "none";
         navBar.style.width = "0";
         mainBar.style.marginLeft = "0";
-    }
- 
-    else {
+    } else {
         navBar.style.display = "block";
         mainBar.style.marginLeft = "250px";
         setTimeout(function() {navBar.style.width = "250px"}, 15);
     }
-  }
+}
 
 const loginForm = document.querySelector("#login");
 console.log(loginForm)
@@ -78,13 +76,16 @@ const renderMainPage = `
 </div>
 `;
 
-loginForm.addEventListener("submit", function(e) {
-  loginPage.style.display = "none";
-  document.querySelector("body").innerHTML = renderMainPage;
-  displayUserProfile();
-})
+// loginForm.addEventListener("submit", function(e) {
+//   console.log('Buye')
+//     e.preventDefault();
+//   loginPage.style.display = "none";
+//   document.querySelector("body").innerHTML = renderMainPage;
+//   displayUserProfile();
+// })
 
 loginForm.addEventListener("submit", function(e) {
+    e.preventDefault();
     findARestaurant();
     displayUserProfile();
 
@@ -94,6 +95,12 @@ function findARestaurant() {
     loginPage.style.display = "none";
     document.querySelector("body").innerHTML = renderMainPage;
     
+    // ********************** old code **********************
+    // const resultsPage = `
+    // <div id="results">
+    // <h1>Your Results!</h1>   
+    // </div>
+    // `;
     const resultsPage = `
     <div id="results">
     <h1>Your Results!</h1>   
@@ -102,56 +109,108 @@ function findARestaurant() {
 
     const restaurantButton = document.querySelector("#findRestaurant");
     restaurantButton.addEventListener('click', function(event) {
-        
-    document.querySelector("body").innerHTML += resultsPage;
+      document.querySelector("body").innerHTML += resultsPage;
 
       /* Yelp Api get Data */
       var myurl =
       "https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?term=restaurant&location=San Francisco";
       // import { config } from "config.js";
       const apiKey = config.API_KEY;
-      $.ajax({
-      url: myurl,
-      headers: {
-          Authorization: `Bearer ${apiKey}`,
-          "Retry-After": 0
-      },
-      method: "GET",
-      dataType: "json",
-      success: function(data) {
-          // Grab the results from the API JSON return
-          const totalResults = data.businesses;
 
-          if (totalResults.length > 0) {
+      let newPromise = Promise.resolve("hey")
+      newPromise.then(() => {
+        $.ajax({
+          url: myurl,
+          headers: {
+            Authorization: `Bearer ${apiKey}`,
+            "Retry-After": 0
+          },
+          method: "GET",
+          dataType: "json",
+          success: function(data) {
+            // Grab the results from the API JSON return
+            const totalResults = data.businesses;
 
-            for(let i=0; i < 3; i++){
-                let randomRestaurant = totalResults[Math.floor ( Math.random() * totalResults.length)];
+            if (totalResults.length > 0) {
+              for (let i = 0; i < 3; i++) {
+                let randomRestaurant =
+                  totalResults[Math.floor(Math.random() * totalResults.length)];
                 let restaurantImage = randomRestaurant.image_url;
-                // debugger
-                let resultRestaurant = document.createElement('div');
-                resultRestaurant.id = "foundRestaurant";
-                    resultRestaurant.innerHTML = `
+             
+                let resultRestaurant = document.createElement("div");
+                resultRestaurant.id = `found-restaurant`;
+                resultRestaurant.innerHTML = `
                     <br><img src="${restaurantImage}" width="250px" height="150px">
-                    <h2><a href="${randomRestaurant.url}">${randomRestaurant.name}</a></h2>
+                    <h2><a url="${randomRestaurant.url}" class="yelp-url-${i} place" target='iframe'>${randomRestaurant.name}</a></h2>
                     <p>Category: ${randomRestaurant.categories[0].title}</p>
                     <p>Rating: ${randomRestaurant.rating} stars</p>
                     <p>Price: ${randomRestaurant.price}</p>
                     <p>Location: ${randomRestaurant.location.address1}, ${randomRestaurant.location.address2}<br>${randomRestaurant.location.city}, ${randomRestaurant.location.zip_code}</p>
                     <p>Phone number: ${randomRestaurant.display_phone}</p>
                     `;
-            let resultsDiv = document.querySelector("#results");
-            resultsDiv.appendChild(resultRestaurant);
-            };
-          
-          } else {
-          //   let resultsDiv = document.querySelector("#results");
-          $("#results").append("<h5>We discovered no results! Edit your location and try again.</h5>");
-          }
+                resultsDiv = document.querySelector("#results");
+                resultsDiv.appendChild(resultRestaurant);
+                // // ********************** beginning **********************
+                // document.querySelector(`.yelp-url-${i}`).addEventListener("click", function(event) {
+                //   event.preventDefault();
+                //   console.log("I work the second time!")
+                //   // console.log(document.querySelector(`.yelp-url-${i}`).href);
 
-      }
-    })
+                //   const iframeEl = document.querySelector("iframe");
+                //   console.log(iframeEl);
+                //   if (iframeEl === null) {
+
+                //     resultsDiv.innerHTML += `
+                //       <iframe id='iframe' src="${event.target.getAttribute('url')}"></iframe>
+                //     `;
+                //   } else {
+
+                //     iframeEl.src = event.target.getAttribute("url");
+                //   }
+                // });
+                // // ********************** ending **********************
+              }
+            } else {
+              //   let resultsDiv = document.querySelector("#results");
+              $("#results").append(
+                "<h5>We discovered no results! Edit your location and try again.</h5>"
+              );
+            }
+          }
+        });
+      })
+      .then(() => {
+                    // wait for the above request to finish, then add event listener
+                    document.body.addEventListener('click', (event) => {
+                      event.preventDefault();
+                      if (
+                        event.target.classList.contains("place")
+                      ) {
+                          resultsDiv = document.querySelector("#results");
+                          console.log("I work the second time!")
+                          // console.log(document.querySelector(`.yelp-url-${i}`).href);
+
+                          const iframeEl = document.querySelector("iframe");
+                          console.log(iframeEl);
+                          if (iframeEl === null) {
+                            debugger
+                            resultsDiv.innerHTML += `
+                              <iframe id='iframe' src="${event.target.getAttribute('url')}"></iframe>
+                            `;
+                          } else {
+                            // console.log(event.target.getAttribute("url");
+                            iframeEl.src = event.target.getAttribute("url");
+                          }
+                      }
+                    })
+                  });
+    
+
+
+    
   })
 };
+
 
 const renderProfile = `
   <h1>Profile</h1>
