@@ -28,50 +28,52 @@ const renderMainPage = `
 
   <div>
     <div id="mySidenav" class="sidenav">
-      <a href="#">About</a>
-      <a href="#">Services</a>
-      <a href="#">Clients</a>
-      <a href="#">Contact</a>
+      <a href="#">Homepage</a>
+      <a href="#">Last Visited</a>
+      <a href="#">Top Favorited</a>
+      <a href="#" id="profile">Profile</a>
     </div>
 
     <!-- Use any element to open the sidenav -->
-    <div class="container" onclick="myFunction(this)">
+    <div class="hamburger-icon" onclick="myFunction(this)">
         <div class="bar1"></div>
         <div class="bar2"></div>
         <div class="bar3"></div>
     </div>
 
-    <h1>Pick and Chews</h1>
-    <button id="findRestaurant">Find Restaurants</button>
-    <h3>Filters</h3>
-    <div>
-      <h4>Distance</h4>
-      <button type="button">5 Miles</button>
-      <button type="button">10 Miles</button>
-      <button type="button">20 Miles</button>
-    </div>
-    <div>
-      <!-- Remove this h4 later -->
-      <h4>Only Restaurants that are open now</h4>
-      <button type="button">Open now</button>
-    </div>
-    <div>
-      <h4>Star Ratings</h4>
-      <button type="button">1 Star</button>
-      <button type="button">2 Star</button>
-      <button type="button">3 Star</button>
-      <button type="button">4 Star</button>
-      <button type="button">5 Star</button>
-    </div>
-    <div>
-      <h4>Price</h4>
-      <button type="button">1 Dollar Sign</button>
-      <button type="button">2 Dollar Sign</button>
-      <button type="button">3 Dollar Sign</button>
-      <button type="button">4 Dollar Sign</button>
-    </div>
-    <div id="results">
-        <ul id="resultList"></ul>    
+    <div id="main-content">
+      <h1>Pick and Chews</h1>
+      <button id="findRestaurant">Find Restaurants</button>
+      <h3>Filters</h3>
+      <div>
+        <h4>Distance</h4>
+        <button type="button">5 Miles</button>
+        <button type="button">10 Miles</button>
+        <button type="button">20 Miles</button>
+      </div>
+      <div>
+        <!-- Remove this h4 later -->
+        <h4>Only Restaurants that are open now</h4>
+        <button type="button">Open now</button>
+      </div>
+      <div>
+        <h4>Star Ratings</h4>
+        <button type="button">1 Star</button>
+        <button type="button">2 Star</button>
+        <button type="button">3 Star</button>
+        <button type="button">4 Star</button>
+        <button type="button">5 Star</button>
+      </div>
+      <div>
+        <h4>Price</h4>
+        <button type="button">1 Dollar Sign</button>
+        <button type="button">2 Dollar Sign</button>
+        <button type="button">3 Dollar Sign</button>
+        <button type="button">4 Dollar Sign</button>
+      </div>
+      <div id="results">
+          <ul id="resultList"></ul>    
+      </div>
     </div>
   </div>
 </div>
@@ -138,6 +140,6 @@ const renderProfile = `
 function displayUserProfile() {
   document.querySelector("#profile").addEventListener("click", function(e) {
     // renderMainPage.style.display = "none";
-    document.querySelector("body").innerHTML = renderProfile;
+    document.querySelector("#main-content").innerHTML = renderProfile;
   })
     }
