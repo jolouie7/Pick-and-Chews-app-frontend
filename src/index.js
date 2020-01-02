@@ -76,40 +76,54 @@ function myFunction(x) {
 
 /* Login */
 const loginForm = document.querySelector("#login");
-console.log(loginForm);
 const loginPage = document.querySelector("#login-page");
-console.log(loginPage);
 loginForm.addEventListener("submit", function(e) {
-//   loginPage.style.display = "none";
-    let nameValue = event.target.name.value;
-    // debugger
+//   ć
+    let usernameValue = event.target.username.value;
 
-    let userInfo = {
-        username: nameValue
-    }
-    
-    let submitObj = {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        },
-        body: JSON.stringify(userInfo)
-    }
-
-    fetch('http://127.0.0.1:3000/users', submitObj)
+    fetch('http://127.0.0.1:3000/users')
     .then(function(response) {
         response.json().then(function(results){
-            currentUserId = results.data.id;
-            currentUserName = results.data.attributes.username;
+            results.forEach(element => {
+                if (element.username == usernameValue){
+                    debugger
+                    currentUserId = element.id;
+                    currentUserName = element.username;
+                }
+                else {
+                    // let userInfo = {
+                    //     username: usernameValue
+                    // }
+                    
+                    // let submitObj = {
+                    //     method: "POST",
+                    //     headers: {
+                    //         'Content-Type': 'application/json',
+                    //         'Accept': 'application/json'
+                    //     },
+                    //     body: JSON.stringify(userInfo)
+                    // }
+                
+                    // fetch('http://127.0.0.1:3000/users', submitObj)
+                    // .then(function(response) {
+                    //     response.json().then(function(results){
+                    //         currentUserId = results.data.id;
+                    //         currentUserName = results.data.attributes.username;
+                    //     })
+                    // })
+                    console.log("hi");
+                }
+            }) 
         })
     })
+
 
     document.querySelector("body").innerHTML = renderMainPage;
   findARestaurant();
   displayUserProfile();
   displayHomepage();
   displayLastVisited();
+  displayFavorited();
 })
 
 
@@ -174,32 +188,143 @@ function findARestaurant() {
   })
 };
 
-const renderProfile = `
-  <h1>Profile</h1>
-  <h2>Welcome ${currentUserName}!</h2>
-  `
+
   function displayUserProfile() {
       document.querySelector("#profile").addEventListener("click", function(e) {
-    // renderMainPage.style.display = "none";
-    document.querySelector("#main-content").innerHTML = renderProfile;
+        const mainDiv = document.querySelector("#main-content")
+        let renderProfile = ` <h1>Profile</h1>
+          <h2>Welcome ${currentUserName}!</h2>
+          <h3>Name: </h3>
+          <h3>Bio: </h3>
+          <form action="#" id="updates">
+                <input type="text" name="name" placeholder="Name" id="name">
+                <br>
+                <input type="text" name="bio" placeholder="Bio">
+                <br>
+          <button type="submit">Update</button><br>
+          <button id="deleteUser">Delete</button>`
+        mainDiv.innerHTML = renderProfile;
+        updateUser();
+        deleteUser();
 })
 };
   
-//under construction - how to redirect to homepage with functionality?
-// function displayHomepage() {
-//     document.querySelector('#homepage').addEventListener('click', function(e) {
-//         loginPage.style.display = "none";
-//         document.querySelector("#main").innerHTML = renderMainPage;
-//     })
-// };
+    function updateUser() {
+        document.querySelector('#updates').addEventListener('submit', function (e) {
+            console.log("hi");
+            e.preventDefault();
+            const bioInput = event.target.bio.value;
+            const nameInput = event.target.name.value;
+            const userInfo = {
+                'username': currentUserName,
+                'name': nameInput,
+                'bio': bioInput
+              }
+            
+              let updateObj = {
+                method: "PATCH",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json' 
+                },
+                body: JSON.stringify(userInfo)
+              }
+            
+              fetch('http://127.0.0.1:3000/users/' + `${currentUserId}`, updateObj)
+                .then (function(response){
+                  response.json().then(data => {
+                    console.log(data);
+                  });
+                })
+        })
+    }
+
+    function deleteUser() {
+        document.querySelector('#deleteUser').addEventListener('click', function (e) {
+            console.log("hey");
+
+            const userInfo = {
+                username: currentUserName
+            }
+            
+            let deleteObj = {
+                method: "DELETE",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(userInfo)
+            }
+
+            fetch('http://127.0.0.1:3000/users/' + `${currentUserId}`, deleteObj)
+            debugger
+            location.reload();
+        })
+    }
+
+// under construction - how to redirect to homepage with functionality?
+function displayHomepage() {
+    document.querySelector('#homepage').addEventListener('click', function(e) {
+        loginPage.style.display = "none";
+        const rerenderMainPage = `
+        <div id="main-content">
+        <h1>Pick and Chews</h1>
+        <button id="find-restaurant">Find Restaurants</button><br><br><br>
+        <h3>Filters</h3>
+        <div id="filters-div">
+        <div>
+        <h4>Distance</h4>
+                <button type="button">5 Miles</button>
+                <button type="button">10 Miles</button>
+                <button type="button">20 Miles</button>
+                </div>
+            <div>
+            <!-- Remove this h4 later -->
+            <h4>Only Restaurants that are open now</h4>
+            <button type="button">Open now</button>
+            </div>
+            <div>
+            <h4>Star Ratings</h4>
+            <button type="button">1 Star</button>
+            <button type="button">2 Star</button>
+            <button type="button">3 Star</button>
+            <button type="button">4 Star</button>
+            <button type="button">5 Star</button>
+            </div>
+            <div>
+            <h4>Price</h4>
+            <button type="button">$</button>
+            <button type="button">$$</button>
+            <button type="button">$$$</button>
+            <button type="button">$$$$</button>
+            </div>
+            <br>
+            </div>
+            </div>
+            </div>
+            </div>`
+        document.querySelector("#main-content").innerHTML = rerenderMainPage;
+        findARestaurant();
+    })
+};
         
-// const renderLastVisited = `
-// <h1>Last Visited</h1>
-// `;
         
-// function displayLastVisited() {
-//     document.querySelector('#lastVisited').addEventListener('click', function(e) {
-//         document.querySelector("#main-content").innerHTML = renderLastVisited;
-//     })
-// };
+function displayLastVisited() {
+    document.querySelector('#last-visited').addEventListener('click', function(e) {
+        const mainDiv = document.querySelector("#main-content")
+        const renderLastVisited = `
+            <h1>Last Visited</h1>
+            `;
+        mainDiv.innerHTML = renderLastVisited;
+    })
+};
     
+function displayFavorited() {
+    document.querySelector('#top-favorited').addEventListener('click', function(e) {
+        const mainDiv = document.querySelector("#main-content")
+        const renderLastVisited = `
+            <h1>Favorited Restaurants</h1>
+            `;
+        mainDiv.innerHTML = renderLastVisited;
+    })
+};
