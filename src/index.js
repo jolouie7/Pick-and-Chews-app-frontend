@@ -86,36 +86,34 @@ loginForm.addEventListener("submit", function(e) {
         response.json().then(function(results){
             results.forEach(element => {
                 if (element.username == usernameValue){
-                    debugger
                     currentUserId = element.id;
                     currentUserName = element.username;
-                }
-                else {
-                    // let userInfo = {
-                    //     username: usernameValue
-                    // }
-                    
-                    // let submitObj = {
-                    //     method: "POST",
-                    //     headers: {
-                    //         'Content-Type': 'application/json',
-                    //         'Accept': 'application/json'
-                    //     },
-                    //     body: JSON.stringify(userInfo)
-                    // }
-                
-                    // fetch('http://127.0.0.1:3000/users', submitObj)
-                    // .then(function(response) {
-                    //     response.json().then(function(results){
-                    //         currentUserId = results.data.id;
-                    //         currentUserName = results.data.attributes.username;
-                    //     })
-                    // })
-                    console.log("hi");
                 }
             }) 
         })
     })
+
+    let userInfo = {
+        username: usernameValue
+    }
+    
+    let submitObj = {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify(userInfo)
+    }
+
+    fetch('http://127.0.0.1:3000/users', submitObj)
+    .then(function(response) {
+        response.json().then(function(results){
+            currentUserId = results.data.id;
+            currentUserName = results.data.attributes.username;
+        })
+    })
+    console.log("hi");
 
 
     document.querySelector("body").innerHTML = renderMainPage;
