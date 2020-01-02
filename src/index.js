@@ -40,15 +40,15 @@ const renderMainPage = `
     
     <div id="main-content">
       <h1>Pick and Chews</h1>
-      <button id="findRestaurant">Find Restaurants</button><br>
+      <button id="findRestaurant" onclick="functionPlzWork()">Find Restaurants</button><br>
       <button id="testing">Find 3 new restaurants</button>
       <h3>Filters</h3>
       <div id="filters-div">
         <div>
             <h4>Distance</h4>
-            <button type="button">5 Miles</button>
-            <button type="button">10 Miles</button>
-            <button type="button">20 Miles</button>
+            <button type="button" value="5">5 Miles</button>
+            <button type="button" value="10">10 Miles</button>
+            <button type="button" value="20">20 Miles</button>
         </div>
         <div>
             <!-- Remove this h4 later -->
@@ -72,11 +72,174 @@ const renderMainPage = `
         </div>
         <br>
         </div>
+        <div id="results">
+          <h1>Your Results!</h1>   
+        </div>
         </div>
     </div>
 </div>
 `;
 
+// const resultsPage = `
+//     <div id="results">
+//     <h1>Your Results!</h1>   
+//     </div>
+//     `;
+
+function functionPlzWork() {
+  
+  console.log("hii");
+  // // document.querySelector("#testing").addEventListener("click", () => {
+  //                 /******************************** Added a testing ID in the rendered HTML *********************************/
+  //                 let resultsDiv = document.querySelector("#results");
+  //                 // resultsDiv.innerHTML = resultsPage;
+  //             for (let i = 0; i < 3; i++) {
+  //                randomRestaurant =
+  //                 totalResults[Math.floor(Math.random() * totalResults.length)];
+  //                restaurantImage = randomRestaurant.image_url;
+             
+  //                resultRestaurant = document.createElement("div");
+  //               resultRestaurant.id = `found-restaurant`;
+  //               // resultRestaurant.innerHTML = `
+  //               //     <br><img src="${restaurantImage}" width="250px" height="150px">
+  //               //     <h2><a url="${randomRestaurant.url}" class="yelp-url-${i} place" target='iframe'>${randomRestaurant.name}</a></h2>
+  //               //     <p>Category: ${randomRestaurant.categories[0].title}</p>
+  //               //     <p>Rating: ${randomRestaurant.rating} stars</p>
+  //               //     <p>Price: ${randomRestaurant.price}</p>
+  //               //     <p>Location: ${randomRestaurant.location.address1}, ${randomRestaurant.location.address2}<br>${randomRestaurant.location.city}, ${randomRestaurant.location.zip_code}</p>
+  //               //     <p>Phone number: ${randomRestaurant.display_phone}</p>
+  //               //     `;
+  //               // resultsDiv = document.querySelector("#results");
+                
+  //               resultsDiv.innerHTML += `
+  //               <h1>woow</h1>
+  //                   <br><img src="${restaurantImage}" width="250px" height="150px">
+  //                   <h2><a url="${randomRestaurant.url}" class="yelp-url-${i} place" target='iframe'>${randomRestaurant.name}</a></h2>
+  //                   <p>Category: ${randomRestaurant.categories[0].title}</p>
+  //                   <p>Rating: ${randomRestaurant.rating} stars</p>
+  //                   <p>Price: ${randomRestaurant.price}</p>
+  //                   <p>Location: ${randomRestaurant.location.address1}, ${randomRestaurant.location.address2}<br>${randomRestaurant.location.city}, ${randomRestaurant.location.zip_code}</p>
+  //                   <p>Phone number: ${randomRestaurant.display_phone}</p>
+  //                   `;
+  //               }
+
+  /************************** beginning ***************************/
+  const restaurantButton = document.querySelector("#findRestaurant");
+  restaurantButton.addEventListener("click", function(event) {
+    // document.querySelector("body").innerHTML += resultsPage;
+
+    /* Yelp Api get Data */
+    var myurl =
+      "https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?term=burger&location=SanFrancisco&offset=100";
+    // import { config } from "config.js";
+    const apiKey = config.API_KEY;
+
+    let newPromise = Promise.resolve("hey");
+    newPromise
+      .then(() => {
+        $.ajax({
+          url: myurl,
+          headers: {
+            Authorization: `Bearer ${apiKey}`,
+            "Retry-After": 0
+          },
+          method: "GET",
+          dataType: "json",
+          success: function(data) {
+            // Grab the results from the API JSON return
+            const totalResults = data.businesses;
+            console.log(data);
+            if (totalResults.length > 0) {
+              resultsDiv = document.querySelector("#results");
+              resultsDiv.innerHTML = `
+                <div id="results">
+                  <h1>Your Results!</h1>   
+                </div>`;
+              for (let i = 0; i < 3; i++) {
+                let randomRestaurant =
+                  totalResults[Math.floor(Math.random() * totalResults.length)];
+                let restaurantImage = randomRestaurant.image_url;
+
+                let resultRestaurant = document.createElement("div");
+                resultRestaurant.id = `found-restaurant`;
+                resultRestaurant.innerHTML = `
+                    <br><img src="${restaurantImage}" width="250px" height="150px">
+                    <h2><a url="${randomRestaurant.url}" class="yelp-url-${i} place" target='iframe'>${randomRestaurant.name}</a></h2>
+                    <p>Category: ${randomRestaurant.categories[0].title}</p>
+                    <p>Rating: ${randomRestaurant.rating} stars</p>
+                    <p>Price: ${randomRestaurant.price}</p>
+                    <p>Location: ${randomRestaurant.location.address1}, ${randomRestaurant.location.address2}<br>${randomRestaurant.location.city}, ${randomRestaurant.location.zip_code}</p>
+                    <p>Phone number: ${randomRestaurant.display_phone}</p>
+                    `;
+                
+                // console.log(resultRestaurant)
+                resultsDiv.append(resultRestaurant);
+                /******************************** Added a testing ID in the rendered HTML *********************************/
+                // )
+
+                // // ********************** beginning **********************
+                // document.querySelector(`.yelp-url-${i}`).addEventListener("click", function(event) {
+                //   event.preventDefault();
+                //   console.log("I work the second time!")
+                //   // console.log(document.querySelector(`.yelp-url-${i}`).href);
+
+                //   const iframeEl = document.querySelector("iframe");
+                //   console.log(iframeEl);
+                //   if (iframeEl === null) {
+
+                //     resultsDiv.innerHTML += `
+                //       <iframe id='iframe' src="${event.target.getAttribute('url')}"></iframe>
+                //     `;
+                //   } else {
+
+                //     iframeEl.src = event.target.getAttribute("url");
+                //   }
+                // });
+                // // ********************** ending **********************
+              }
+            } else {
+              //   let resultsDiv = document.querySelector("#results");
+              $("#results").append(
+                "<h5>We discovered no results! Edit your location and try again.</h5>"
+              );
+            }
+            // clickTheFindRestaurantButtonAgain();
+          }
+        });
+      })
+      .then(() => {
+        // wait for the above request to finish, then add event listener
+        document.body.addEventListener("click", event => {
+          event.preventDefault();
+          if (event.target.classList.contains("place")) {
+            resultsDiv = document.querySelector("#results");
+            console.log("I work the second time!");
+            // console.log(document.querySelector(`.yelp-url-${i}`).href);
+
+            const iframeEl = document.querySelector("iframe");
+            console.log(iframeEl);
+            if (iframeEl === null) {
+              debugger;
+              resultsDiv.innerHTML += `
+                  <iframe id='iframe' src="${event.target.getAttribute(
+                    "url"
+                  )}"></iframe>
+                `;
+            } else {
+              // console.log(event.target.getAttribute("url");
+              iframeEl.src = event.target.getAttribute("url");
+            }
+          }
+        });
+      });
+  });
+  /*************************** end ***************************/
+
+
+
+  //               // }
+                console.log("plz work")
+}
 // loginForm.addEventListener("submit", function(e) {
 //   console.log('Buye')
 //     e.preventDefault();
@@ -97,7 +260,7 @@ loginForm.addEventListener("submit", function(event) {
 // declaration to be when the user first clicks and when the user clicks the second time
 // let restaurantButton;
 
-function findARestaurant(ele) {
+function findARestaurant() {
     
     // ********************** old code **********************
     // const resultsPage = `
@@ -105,21 +268,16 @@ function findARestaurant(ele) {
     // <h1>Your Results!</h1>   
     // </div>
     // `;
-    const resultsPage = `
-    <div id="results">
-    <h1>Your Results!</h1>   
-    </div>
-    `;
+    
 
     const restaurantButton = document.querySelector("#findRestaurant");
-    console.log(ele)
     restaurantButton.addEventListener('click', function(event) {
 
-      document.querySelector("body").innerHTML += resultsPage;
+      // document.querySelector("body").innerHTML += resultsPage;
 
       /* Yelp Api get Data */
       var myurl =
-      "https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?term=restaurant&location=San Francisco";
+      "https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?term=burger&location=SanFrancisco&offset=100";
       // import { config } from "config.js";
       const apiKey = config.API_KEY;
 
@@ -136,7 +294,7 @@ function findARestaurant(ele) {
           success: function(data) {
             // Grab the results from the API JSON return
             const totalResults = data.businesses;
-
+            console.log(data)
             if (totalResults.length > 0) {
               for (let i = 0; i < 3; i++) {
                 let randomRestaurant =
@@ -157,42 +315,7 @@ function findARestaurant(ele) {
                 resultsDiv = document.querySelector("#results");
                 resultsDiv.appendChild(resultRestaurant);
                 /******************************** Added a testing ID in the rendered HTML *********************************/
-                document.querySelector("#testing").addEventListener("click", () => {
-                  /******************************** Added a testing ID in the rendered HTML *********************************/
-                  resultsDiv.innerHTML = resultsPage;
-              for (let i = 0; i < 3; i++) {
-                 randomRestaurant =
-                  totalResults[Math.floor(Math.random() * totalResults.length)];
-                 restaurantImage = randomRestaurant.image_url;
-             
-                 resultRestaurant = document.createElement("div");
-                resultRestaurant.id = `found-restaurant`;
-                // resultRestaurant.innerHTML = `
-                //     <br><img src="${restaurantImage}" width="250px" height="150px">
-                //     <h2><a url="${randomRestaurant.url}" class="yelp-url-${i} place" target='iframe'>${randomRestaurant.name}</a></h2>
-                //     <p>Category: ${randomRestaurant.categories[0].title}</p>
-                //     <p>Rating: ${randomRestaurant.rating} stars</p>
-                //     <p>Price: ${randomRestaurant.price}</p>
-                //     <p>Location: ${randomRestaurant.location.address1}, ${randomRestaurant.location.address2}<br>${randomRestaurant.location.city}, ${randomRestaurant.location.zip_code}</p>
-                //     <p>Phone number: ${randomRestaurant.display_phone}</p>
-                //     `;
-                // resultsDiv = document.querySelector("#results");
-                
-                resultsDiv.innerHTML += `
-                <h1>woow</h1>
-                    <br><img src="${restaurantImage}" width="250px" height="150px">
-                    <h2><a url="${randomRestaurant.url}" class="yelp-url-${i} place" target='iframe'>${randomRestaurant.name}</a></h2>
-                    <p>Category: ${randomRestaurant.categories[0].title}</p>
-                    <p>Rating: ${randomRestaurant.rating} stars</p>
-                    <p>Price: ${randomRestaurant.price}</p>
-                    <p>Location: ${randomRestaurant.location.address1}, ${randomRestaurant.location.address2}<br>${randomRestaurant.location.city}, ${randomRestaurant.location.zip_code}</p>
-                    <p>Phone number: ${randomRestaurant.display_phone}</p>
-                    `;
-                }
-
-
-
-                })
+                // )
 
                 // // ********************** beginning **********************
                 // document.querySelector(`.yelp-url-${i}`).addEventListener("click", function(event) {
@@ -251,23 +374,6 @@ function findARestaurant(ele) {
       });
   })
 };
-// findARestaurant();
-
-// // when clicking the find restaurant button we should render 3 new restaurants to the page
-// function clickTheFindRestaurantButtonAgain() {
-//   console.log("L223")
-//   if (!event.target.id.contains("login-page")) {
-
-//     document.querySelector("body").addEventListener("click", function(event) {
-//       console.log("L225")
-//       if (event.target.getAttribute("id") === "findRestaurant") {
-//         findARestaurant();
-//       }
-//       findARestaurant();
-//     })
-//   }
-//   clickTheFindRestaurantButtonAgain();
-//   }
 
 const renderProfile = `
   <h1>Profile</h1>
