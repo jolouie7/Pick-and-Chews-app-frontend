@@ -37,40 +37,44 @@ function myFunction(x) {
     
     <div id="main-content">
     <h1>Pick and Chews</h1>
-    <button id="find-restaurant">Find Restaurants</button><br><br><br>
-    <h3>Filters</h3>
-    <div id="filters-div">
-    <div>
-    <h4>Distance</h4>
-            <button type="button">5 Miles</button>
-            <button type="button">10 Miles</button>
-            <button type="button">20 Miles</button>
+    <form action="#" id="find-restaurant-form">
+        <label>Enter a location</label><br>
+        <input type="text" name="location" placeholder="Location" id="location" required><br>
+    <br>then...<br>
+    <button type="submit" id="find-restaurant">Find Restaurants!</button>
+    <br><br>Or modify your searching using<br>
+        <h3>Filters</h3>
+        <div id="filters-div">
+            <h4>Distance</h4>
+            <div id="distance">
+                <button type="button" value="8100">5 Miles</button>
+                <button type="button" value="16100">10 Miles</button>
+                <button type="button" value="25000">15 Miles</button>
             </div>
-        <div>
-        <!-- Remove this h4 later -->
-        <h4>Only Restaurants that are open now</h4>
-        <button type="button">Open now</button>
+            <h4>Only Restaurants that are open now</h4>
+            <div id="open-now">
+                <button type="button" value="true">Open now</button>
+            </div>
+            <h4>Star Ratings</h4>
+            <div id="ratings">
+                <button type="button" value="1">1 Star</button>
+                <button type="button" value="2">2 Star</button>
+                <button type="button" value="3">3 Star</button>
+                <button type="button" value="4">4 Star</button>
+                <button type="button" value="5">5 Star</button>
+            </div>
+            <h4>Price</h4>
+            <div id="price">
+                <button type="button" value="1">$</button>
+                <button type="button" value="2">$$</button>
+                <button type="button" value="3">$$$</button>
+                <button type="button" value="4">$$$$</button>
+            </div>
+            <br>
         </div>
-        <div>
-        <h4>Star Ratings</h4>
-        <button type="button">1 Star</button>
-        <button type="button">2 Star</button>
-        <button type="button">3 Star</button>
-        <button type="button">4 Star</button>
-        <button type="button">5 Star</button>
-        </div>
-        <div>
-        <h4>Price</h4>
-        <button type="button">$</button>
-        <button type="button">$$</button>
-        <button type="button">$$$</button>
-        <button type="button">$$$$</button>
-        </div>
-        <br>
-        </div>
-        </div>
-        </div>
-        </div>
+    </div>
+        
+</div>
         `;
         
 
@@ -122,7 +126,44 @@ loginForm.addEventListener("submit", function(e) {
   displayHomepage();
   displayLastVisited();
   displayFavorited();
+
+    distanceFilter();
+    openNowFilter();
+    ratingFilter();
+    priceFilter();
 })
+
+function distanceFilter(){
+    const distanceDiv = document.querySelector('#distance');
+    distanceDiv.addEventListener('click', function(event) {
+        distanceInput = event.target.value;
+        console.log(distanceInput);
+    })
+}
+
+function openNowFilter(){
+    const openNowDiv = document.querySelector('#open-now');
+    openNowDiv.addEventListener('click', function(event) {
+        openNowInput = event.target.value;
+        console.log(openNowInput);
+    })
+}
+
+function ratingFilter(){
+    const ratingDiv = document.querySelector('#ratings');
+    ratingDiv.addEventListener('click', function(event) {
+        ratingInput = event.target.value;
+        console.log(ratingInput);
+    })
+}
+
+function priceFilter(){
+    const priceDiv = document.querySelector('#price');
+    priceDiv.addEventListener('click', function(event) {
+        priceInput = event.target.value;
+        console.log(priceInput);
+    });
+}
 
 
 
@@ -133,16 +174,21 @@ function findARestaurant() {
     </div>
     `;
     
-    const restaurantButton = document.querySelector("#find-restaurant");
-    restaurantButton.addEventListener('click', function(event) {
+    const restaurantForm = document.querySelector("#find-restaurant-form");
+    restaurantForm.addEventListener('submit', function(event) {
+
+        let locationInput = event.target.location.value;
+        console.log(event.target.location.value)
         
         document.querySelector("#main").innerHTML += resultsPage;
 
+
       /* Yelp Api get Data */
       var myurl =
-      "https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?term=restaurant&location=San Francisco";
+      'https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?radius=' + `${distanceInput}` + '&open_now=' + `${openNowInput}` + '&sort_by rating=' + `${ratingInput}` + '&price=' + `${priceInput}` + '&location=' + `${locationInput}`;
       // import { config } from "config.js";
       const apiKey = config.API_KEY;
+      console.log(myurl)
       $.ajax({
       url: myurl,
       headers: {
@@ -184,6 +230,10 @@ function findARestaurant() {
       }
     })
   })
+  displayUserProfile();
+  displayHomepage();
+  displayLastVisited();
+  displayFavorited();
 };
 
 

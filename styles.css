@@ -122,8 +122,6 @@ button[type=submit] {
     text-align: center;
 }
 
-
-
 #find-restaurant {
     background-color:#FE7D3B;
     color: white;
@@ -145,6 +143,17 @@ button[type=submit] {
     margin: auto;
     background-color: white;
     padding: 5px;
+}
+
+input[name=location] {
+    width: 20%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 1px solid grey;
+    color: black;
+    font-size: 15px;
+    border-radius: 7px;
 }
 
 #results {
