@@ -38,7 +38,7 @@ function myFunction(x) {
         <label>Enter a location</label><br>
         <input type="text" name="location" placeholder="Location" id="location" required><br>
     <br>then...<br>
-    <button onclick="functionPlzWork()" id="find-restaurant">Find Restaurants!</button>
+    <button id="find-restaurant">Find Restaurants!</button>
     <br><br>Or modify your searching using<br>
         <h3>Filters</h3>
         <div id="filters-div">
@@ -124,7 +124,8 @@ loginForm.addEventListener("submit", function(event) {
 
 
     document.querySelector("body").innerHTML = renderMainPage;
-  findARestaurant();
+  // findARestaurant();
+  functionPlzWork();
   displayUserProfile();
   displayHomepage();
   displayLastVisited();
@@ -174,7 +175,7 @@ function functionPlzWork() {
   
     /************************** beginning ***************************/
     const restaurantButton = document.querySelector("#find-restaurant");
-    restaurantButton.addEventListener("click", function(event) {
+    restaurantButton.addEventListener("click", function findingRestaurant(event) {
       // document.querySelector("body").innerHTML += resultsPage;
       
       let locationInput = document.querySelector('#location').value;
@@ -200,6 +201,7 @@ function functionPlzWork() {
               // Grab the results from the API JSON return
               const totalResults = data.businesses;
               console.log(data);
+              // debugger
               if (totalResults.length > 0) {
                 resultsDiv = document.querySelector("#results");
                 resultsDiv.innerHTML = `
@@ -225,6 +227,7 @@ function functionPlzWork() {
                   
                   // console.log(resultRestaurant)
                   resultsDiv.append(resultRestaurant);
+                  document.querySelector("#find-restaurant").setAttribute("onclick", "findARestaurant()");
                 }
               } else {
                 //   let resultsDiv = document.querySelector("#results");
@@ -249,9 +252,7 @@ function functionPlzWork() {
               console.log(iframeEl);
               if (iframeEl === null) {
                 resultsDiv.innerHTML += `
-                    <iframe id='iframe' src="${event.target.getAttribute(
-                      "url"
-                    )}"></iframe>
+                    <iframe id='iframe' src="${event.target.getAttribute("url")}" width="120%" height="1000px"></iframe>
                   `;
               } else {
                 // console.log(event.target.getAttribute("url");
@@ -268,11 +269,18 @@ function functionPlzWork() {
   
 
 function findARestaurant() {
-    
-    const restaurantButton = document.querySelector("#find-restaurant");
-    restaurantButton.addEventListener('click', function(event) {
+  // this if statement is to get rid of the console error. We are removing a click event before it is rendered
+  // ***************************** THIS IF STATEMENT DOESN'T WORK! PLZ FIX *****************************
+  // if(document.querySelector("#find-restaurant").hasAttribute("onclick") === true) {
+    document.querySelector("#find-restaurant").removeEventListener("click", findingRestaurant);
+  // }
 
-        let locationInput = document.querySelector('#location').value;
+    // ************************ Can possibly delete ************************************
+    // const restaurantButton = document.querySelector("#find-restaurant");
+    // restaurantButton.addEventListener('click', function(event) {
+    // ************************ Can possibly delete ************************************
+
+      let locationInput = document.querySelector('#location').value;
 
       /* Yelp Api get Data */
       var myurl =
@@ -314,6 +322,7 @@ function findARestaurant() {
                     `;
                 resultsDiv = document.querySelector("#results");
                 resultsDiv.appendChild(resultRestaurant);
+                // document.querySelector("#find-restaurant").setAttribute("onclick", "functionPlzWork()");
               }
             } else {
               //   let resultsDiv = document.querySelector("#results");
@@ -321,7 +330,6 @@ function findARestaurant() {
                 "<h5>We discovered no results! Edit your location and try again.</h5>"
               );
             }
-            // clickTheFindRestaurantButtonAgain();
           }
         });
       })
@@ -350,7 +358,7 @@ function findARestaurant() {
           }
         })
       });
-  })
+  // })
   displayUserProfile();
   displayHomepage();
   displayLastVisited();
