@@ -252,7 +252,7 @@ function functionPlzWork() {
               console.log(iframeEl);
               if (iframeEl === null) {
                 resultsDiv.innerHTML += `
-                    <iframe id='iframe' src="${event.target.getAttribute("url")}" width="120%" height="1000px"></iframe>
+                    <iframe id='iframe' src="${event.target.getAttribute("url")}" width="100%" height="1000px"></iframe>
                   `;
               } else {
                 // console.log(event.target.getAttribute("url");
@@ -349,7 +349,7 @@ function findARestaurant() {
               if (iframeEl === null) {
                 // debugger
                 resultsDiv.innerHTML += `
-                  <iframe id='iframe' src="${event.target.getAttribute('url')}" width="120%" height="1000px"></iframe>
+                  <iframe id='iframe' src="${event.target.getAttribute('url')}" width="100%" height="1000px"></iframe>
                 `;
               } else {
                 // console.log(event.target.getAttribute("url");
@@ -366,78 +366,79 @@ function findARestaurant() {
 };
 
 
-  function displayUserProfile() {
-      document.querySelector("#profile").addEventListener("click", function(e) {
-        const mainDiv = document.querySelector("#main-content")
-        let renderProfile = ` <h1>Profile</h1>
-          <h2>Welcome ${currentUserName}!</h2>
-          <h3>Name: </h3>
-          <h3>Bio: </h3>
-          <form action="#" id="updates">
-                <input type="text" name="name" placeholder="Name" id="name">
-                <br>
-                <input type="text" name="bio" placeholder="Bio">
-                <br>
-          <button type="submit">Update</button><br>
-          <button id="deleteUser">Delete</button>`
-        mainDiv.innerHTML = renderProfile;
-        updateUser();
-        deleteUser();
-})
+const mainDiv = document.querySelector("#main-content");
+
+function displayUserProfile() {
+    document.querySelector("#profile").addEventListener("click", function(e) {
+      let renderProfile = ` <h1>Profile</h1>
+        <h2>Welcome ${currentUserName}!</h2>
+        <h3>Name: </h3>
+        <h3>Bio: </h3>
+        <form action="#" id="updates">
+              <input type="text" name="name" placeholder="Name" id="name">
+              <br>
+              <input type="text" name="bio" placeholder="Bio">
+              <br>
+        <button type="submit">Update</button><br>
+        <button id="deleteUser">Delete</button>`
+      mainDiv.innerHTML = renderProfile;
+      updateUser();
+      deleteUser();
+  })
 };
   
-    function updateUser() {
-        document.querySelector('#updates').addEventListener('submit', function (e) {
-            console.log("hi");
-            e.preventDefault();
-            const bioInput = event.target.bio.value;
-            const nameInput = event.target.name.value;
-            const userInfo = {
-                'username': currentUserName,
-                'name': nameInput,
-                'bio': bioInput
-              }
-            
-              let updateObj = {
-                method: "PATCH",
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json' 
-                },
-                body: JSON.stringify(userInfo)
-              }
-            
-              fetch('http://127.0.0.1:3000/users/' + `${currentUserId}`, updateObj)
-                .then (function(response){
-                  response.json().then(data => {
-                    console.log(data);
-                  });
-                })
-        })
-    }
+function updateUser() {
+  document.querySelector('#updates').addEventListener('submit', function (e) {
+      console.log("hi");
+      e.preventDefault();
+      const bioInput = event.target.bio.value;
+      const nameInput = event.target.name.value;
+      const userInfo = {
+        'username': currentUserName,
+        'name': nameInput,
+        'bio': bioInput
+      }
+      
+      let updateObj = {
+        method: "PATCH",
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json' 
+        },
+        body: JSON.stringify(userInfo)
+      }
+      
+      fetch('http://127.0.0.1:3000/users/' + `${currentUserId}`, updateObj)
+      .then (function(response){
+        response.json().then(data => {
+          console.log(data);
+        });
+      })
+  })
+}
 
-    function deleteUser() {
-        document.querySelector('#deleteUser').addEventListener('click', function (e) {
-            console.log("hey");
+function deleteUser() {
+    document.querySelector('#deleteUser').addEventListener('click', function (e) {
+        console.log("hey");
 
-            const userInfo = {
-                username: currentUserName
-            }
-            
-            let deleteObj = {
-                method: "DELETE",
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify(userInfo)
-            }
+        const userInfo = {
+            username: currentUserName
+        }
+        
+        let deleteObj = {
+            method: "DELETE",
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify(userInfo)
+        }
 
-            fetch('http://127.0.0.1:3000/users/' + `${currentUserId}`, deleteObj)
-            // debugger
-            location.reload();
-        })
-    }
+        fetch('http://127.0.0.1:3000/users/' + `${currentUserId}`, deleteObj)
+        // debugger
+        location.reload();
+    })
+}
 
 // under construction - how to redirect to homepage with functionality?
 function displayHomepage() {
@@ -480,7 +481,8 @@ function displayHomepage() {
             </div>
             </div>
             </div>`
-        document.querySelector("#main-content").innerHTML = rerenderMainPage;
+        // document.querySelector("#main-content").innerHTML = rerenderMainPage;
+        mainDiv.innerHTML = rerenderMainPage;
         findARestaurant();
     })
 };
@@ -488,7 +490,7 @@ function displayHomepage() {
         
 function displayLastVisited() {
     document.querySelector('#last-visited').addEventListener('click', function(e) {
-        const mainDiv = document.querySelector("#main-content")
+        // const mainDiv = document.querySelector("#main-content")
         const renderLastVisited = `
             <h1>Last Visited</h1>
             `;
@@ -498,7 +500,7 @@ function displayLastVisited() {
     
 function displayFavorited() {
     document.querySelector('#top-favorited').addEventListener('click', function(e) {
-        const mainDiv = document.querySelector("#main-content")
+        // const mainDiv = document.querySelector("#main-content")
         const renderLastVisited = `
             <h1>Favorited Restaurants</h1>
             `;
