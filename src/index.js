@@ -36,12 +36,14 @@ function myFunction(x) {
     <div id="main-content">
     <h1>Pick and Chews</h1>
         <label>Enter a location</label><br>
-        <input type="text" name="location" placeholder="Location" id="location" required><br>
-    <br>then...<br>
+        <input type="text" name="location" placeholder="Where would you like to eat?" id="location" required><br>
+    <br>then...<br><br>
     <button onclick="functionPlzWork()" id="find-restaurant">Find Restaurants!</button>
     <br><br>Or modify your searching using<br>
         <h3>Filters</h3>
         <div id="filters-div">
+            <h4>Category</h4>
+            <input type="text" name="category" placeholder="search for breweries, acai bowls, etc." id="category"><br>
             <h4>Distance</h4>
             <div id="distance">
                 <button type="button" value="8100">5 Miles</button>
@@ -134,39 +136,64 @@ loginForm.addEventListener("submit", function(event) {
     openNowFilter();
     ratingFilter();
     priceFilter();
+    categoryFilter();
 })
 
 function distanceFilter(){
     const distanceDiv = document.querySelector('#distance');
+    distanceInput = 1800;
+    if(distanceInput == 1800){
     distanceDiv.addEventListener('click', function(event) {
         distanceInput = event.target.value;
         console.log(distanceInput);
     })
+    }
 }
 
 function openNowFilter(){
     const openNowDiv = document.querySelector('#open-now');
+    openNowInput = false;
+    if(openNowInput == false){
     openNowDiv.addEventListener('click', function(event) {
         openNowInput = event.target.value;
         console.log(openNowInput);
     })
+    }
 }
 
 function ratingFilter(){
     const ratingDiv = document.querySelector('#ratings');
+    ratingInput = 3;
+    if(ratingInput == 3){
     ratingDiv.addEventListener('click', function(event) {
         ratingInput = event.target.value;
         console.log(ratingInput);
     })
+    }
 }
 
 function priceFilter(){
     const priceDiv = document.querySelector('#price');
+    priceInput = 2;
+    if (priceInput == 2){
     priceDiv.addEventListener('click', function(event) {
         priceInput = event.target.value;
         console.log(priceInput);
-    });
+    })
+    }
 }
+
+function categoryFilter(){
+    const categoryDiv = document.querySelector('#category');
+    categoryInput = "food";
+    if (categoryInput == "food"){
+    categoryDiv.addEventListener('click', function(event) {
+        categoryInput = event.target.value;
+        console.log(categoryInput);
+    })
+    }
+}
+
 // -------------------------------------------------
 function functionPlzWork() {
   
@@ -178,10 +205,10 @@ function functionPlzWork() {
       // document.querySelector("body").innerHTML += resultsPage;
       
       let locationInput = document.querySelector('#location').value;
-      
+    
       /* Yelp Api get Data */
       var myurl =
-       'https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?radius=' + `${distanceInput}` + '&open_now=' + `${openNowInput}` + '&sort_by rating=' + `${ratingInput}` + '&price=' + `${priceInput}` + '&location=' + `${locationInput}`;
+       'https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?radius=' + `${distanceInput}` + '&open_now=' + `${openNowInput}` + '&sort_by rating=' + `${ratingInput}` + '&price=' + `${priceInput}` + '&location=' + `${locationInput}` + '&categories=' + `${categoryInput}`;
       // import { config } from "config.js";
       const apiKey = config.API_KEY;
   
@@ -206,6 +233,7 @@ function functionPlzWork() {
                   <div id="results">
                     <h1>Your Results!</h1>   
                   </div>`;
+                //   restaurantArray = []
                 for (let i = 0; i < 3; i++) {
                   let randomRestaurant =
                     totalResults[Math.floor(Math.random() * totalResults.length)];
@@ -214,7 +242,7 @@ function functionPlzWork() {
                   let resultRestaurant = document.createElement("div");
                   resultRestaurant.id = `found-restaurant`;
                   resultRestaurant.innerHTML = `
-                      <br><img src="${restaurantImage}" width="250px" height="150px">
+                      <br><img src="${restaurantImage}" width="250px" height="200px">
                       <h2><a url="${randomRestaurant.url}" class="yelp-url-${i} place" target='iframe'>${randomRestaurant.name}</a></h2>
                       <p>Category: ${randomRestaurant.categories[0].title}</p>
                       <p>Rating: ${randomRestaurant.rating} stars</p>
@@ -222,7 +250,8 @@ function functionPlzWork() {
                       <p>Location: ${randomRestaurant.location.address1}, ${randomRestaurant.location.address2}<br>${randomRestaurant.location.city}, ${randomRestaurant.location.zip_code}</p>
                       <p>Phone number: ${randomRestaurant.display_phone}</p>
                       `;
-                  
+                //   restaurantArray.push(randomRestaurant.name)
+                //   console.log(restaurantArray)
                   // console.log(resultRestaurant)
                   resultsDiv.append(resultRestaurant);
                 }
@@ -276,7 +305,7 @@ function findARestaurant() {
 
       /* Yelp Api get Data */
       var myurl =
-      'https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?radius=' + `${distanceInput}` + '&open_now=' + `${openNowInput}` + '&sort_by rating=' + `${ratingInput}` + '&price=' + `${priceInput}` + '&location=' + `${locationInput}`;
+      'https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?radius=' + `${distanceInput}` + '&open_now=' + `${openNowInput}` + '&sort_by rating=' + `${ratingInput}` + '&price=' + `${priceInput}` + '&location=' + `${locationInput}` + '&categories=' + `${categoryInput}`;
       // import { config } from "config.js";
       const apiKey = config.API_KEY;
       console.log(myurl)
@@ -294,18 +323,18 @@ function findARestaurant() {
       success: function(data) {
           // Grab the results from the API JSON return
           const totalResults = data.businesses;
-          
+          restaurantArray = []
           if (totalResults.length > 0) {
               
             for(let i=0; i < 3; i++){
                 let randomRestaurant = totalResults[Math.floor ( Math.random() * totalResults.length)];
                 let restaurantImage = randomRestaurant.image_url;
-             
                 let resultRestaurant = document.createElement("div");
                 resultRestaurant.id = `found-restaurant`;
                 resultRestaurant.innerHTML = `
                     <br><img src="${restaurantImage}" width="250px" height="150px">
                     <h2><a url="${randomRestaurant.url}" class="yelp-url-${i} place" target='iframe'>${randomRestaurant.name}</a></h2>
+                    <button id="favorite" value="${randomRestaurant.name}">Favorite</button>
                     <p>Category: ${randomRestaurant.categories[0].title}</p>
                     <p>Rating: ${randomRestaurant.rating} stars</p>
                     <p>Price: ${randomRestaurant.price}</p>
@@ -314,12 +343,14 @@ function findARestaurant() {
                     `;
                 resultsDiv = document.querySelector("#results");
                 resultsDiv.appendChild(resultRestaurant);
-              }
-            } else {
-              //   let resultsDiv = document.querySelector("#results");
-              $("#results").append(
+                restaurantArray.push(randomRestaurant.name)
+                console.log(restaurantArray)
+            }
+        } else {
+            //   let resultsDiv = document.querySelector("#results");
+            $("#results").append(
                 "<h5>We discovered no results! Edit your location and try again.</h5>"
-              );
+                );
             }
             // clickTheFindRestaurantButtonAgain();
           }
@@ -347,31 +378,97 @@ function findARestaurant() {
                 // console.log(event.target.getAttribute("url");
                 iframeEl.src = event.target.getAttribute("url");
               }
-          }
+            }
         })
-      });
-  })
-  displayUserProfile();
-  displayHomepage();
-  displayLastVisited();
-  displayFavorited();
+
+        // let favoriteButton = document.querySelector('#favorite')
+        // favoriteButton.addEventListener('click', function(event) {
+        //     console.log('hi there button')
+        //     restaurantArray.forEach(element => {
+        //         if(event.target.favorite.value == element) {
+                    
+        //             console.log('hi')
+                    
+        //         }
+
+        //     })
+        // })
+
+
+    });
+})
+displayUserProfile();
+displayHomepage();
+displayLastVisited();
+displayFavorited();
 };
 
 
+function saveRestaurants(){
+    restaurantArray.forEach(element => {
+        console.log(element);
+        let restaurantInfo = {
+            name: element
+        }
+    
+        let submitObj = {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify(restaurantInfo)
+        }
+        
+        fetch('http://127.0.0.1:3000/restaurants', submitObj)
+        .then(function(response) {
+            response.json().then(function(results){
+                
+                results.forEach(resultElement => {
+                    console.log(resultElement);
+                    // let favoriteInfo = {
+                    //     name: element
+                    // }
+                
+                    // let submitObj = {
+                    //     method: "POST",
+                    //     headers: {
+                    //         'Content-Type': 'application/json',
+                    //         'Accept': 'application/json'
+                    //     },
+                    //     body: JSON.stringify(restaurantInfo)
+                    // }
+                    
+                    // fetch('http://127.0.0.1:3000/favorites', submitObj)
+                    // .then(function(response) {
+                    //     response.json().then(function(results){
+                    //         console.log(results)
+                    //     })
+                    // })
+
+                })
+            })
+        })
+
+    }) 
+}
+    
   function displayUserProfile() {
+      nameInfo = "";
+      bioInfo = "";
       document.querySelector("#profile").addEventListener("click", function(e) {
         const mainDiv = document.querySelector("#main-content")
-        let renderProfile = ` <h1>Profile</h1>
+        const renderProfile = `<center> <h1>Profile</h1>
           <h2>Welcome ${currentUserName}!</h2>
-          <h3>Name: </h3>
-          <h3>Bio: </h3>
+          <p><b>Name:</b> ${nameInfo} </p>
+          <p id="bio"><b>Bio:</b> ${bioInfo} </p>
           <form action="#" id="updates">
                 <input type="text" name="name" placeholder="Name" id="name">
                 <br>
-                <input type="text" name="bio" placeholder="Bio">
-                <br>
-          <button type="submit">Update</button><br>
-          <button id="deleteUser">Delete</button>`
+                <input type="textarea" name="bio" placeholder="Bio">
+                <br><br>
+          <button type="submit">Update Profile</button><br><br>
+          <button id="deleteUser">Delete User</button>`
         mainDiv.innerHTML = renderProfile;
         updateUser();
         deleteUser();
@@ -402,7 +499,23 @@ function findARestaurant() {
               fetch('http://127.0.0.1:3000/users/' + `${currentUserId}`, updateObj)
                 .then (function(response){
                   response.json().then(data => {
-                    console.log(data);
+                    nameInfo = data.data.attributes.name;
+                    bioInfo = data.data.attributes.bio;
+                    
+                    const mainDiv = document.querySelector("#main-content")
+                    const renderProfile = `<center> <h1>Profile</h1>
+                    <h2>Welcome ${currentUserName}!</h2>
+                    <p><b>Name:</b> ${nameInfo} </p>
+                    <p id="bio"><b>Bio:</b> ${bioInfo} </p>
+                    <form action="#" id="updates">
+                        <input type="text" name="name" placeholder="Name" id="name">
+                        <br>
+                        <input type="textarea" name="bio" placeholder="Bio">
+                        <br><br>
+                    <button type="submit">Update Profile</button><br><br>
+                    <button id="deleteUser">Delete User</button>`
+                    mainDiv.innerHTML = renderProfile;
+
                   });
                 })
         })
@@ -426,7 +539,6 @@ function findARestaurant() {
             }
 
             fetch('http://127.0.0.1:3000/users/' + `${currentUserId}`, deleteObj)
-            debugger
             location.reload();
         })
     }

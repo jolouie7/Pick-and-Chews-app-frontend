@@ -1,7 +1,8 @@
 
 button {
+    width: 15%;
     border-radius: 5px;
-    background-color: #FCC09E;
+    background-color: #FE7D3B;
     /* #fcb6b6 */
     border: orange;
     color: white;
@@ -44,7 +45,7 @@ body {
   -webkit-text-stroke-color: #FE7D3B;
 }
 
-input[type=text] {
+input[name=username] {
     width: 80%;
     padding: 12px 20px;
     margin: 8px 0;
@@ -55,7 +56,7 @@ input[type=text] {
     border-radius: 7px;
 }
 
-button[type=submit] {
+button[name=login] {
         width: 80%;
         padding: 12px 20px;
         margin: 8px 0;
@@ -131,6 +132,7 @@ button[type=submit] {
     border-radius: 12px;
     height: 200px;
     width: 400px;
+    outline: none;
 }
 
 #findRestaurant:hover {
@@ -159,7 +161,7 @@ input[name=location] {
 #results {
     text-align: center;
     border: 1px solid #FFDDC1;
-    width: 50%;
+    width: 65%;
     margin: auto;
     background-color: white;
     padding: 10px;
@@ -170,6 +172,11 @@ input[name=location] {
     padding: 10px;
     width: 60%;
     display: inline-block;
+}
+
+#bio {
+    word-wrap: break-word;
+    width: 40%;
 }
 
 /* hamburger navbar icon */
@@ -197,3 +204,15 @@ input[name=location] {
     /* transform: rotate(45deg) translate(-8px, -8px); */
     transform: rotate(45deg) translate(-8px, -8px);
   }
+
+
+  input {
+    width: 50%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 1px solid grey;
+    color: black;
+    font-size: 15px;
+    border-radius: 7px;
+}
