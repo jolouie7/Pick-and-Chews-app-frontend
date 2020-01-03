@@ -459,7 +459,7 @@ function saveRestaurants(){
 
     }) 
 }
-    
+  // let mainDiv = document.querySelector("#main-content");
   function displayUserProfile() {
       nameInfo = "";
       bioInfo = "";
@@ -592,6 +592,7 @@ function displayHomepage() {
             </div>
             </div>`
         // document.querySelector("#main-content").innerHTML = rerenderMainPage;
+        const mainDiv = document.querySelector("#main-content");
         mainDiv.innerHTML = rerenderMainPage;
         findARestaurant();
     })
@@ -600,7 +601,7 @@ function displayHomepage() {
         
 function displayLastVisited() {
     document.querySelector('#last-visited').addEventListener('click', function(e) {
-        // const mainDiv = document.querySelector("#main-content")
+        const mainDiv = document.querySelector("#main-content");
         const renderLastVisited = `
             <h1>Last Visited</h1>
             `;
@@ -610,7 +611,7 @@ function displayLastVisited() {
     
 function displayFavorited() {
     document.querySelector('#top-favorited').addEventListener('click', function(e) {
-        // const mainDiv = document.querySelector("#main-content")
+        const mainDiv = document.querySelector("#main-content")
         const renderLastVisited = `
             <h1>Favorited Restaurants</h1>
             `;
