@@ -35,11 +35,10 @@ function myFunction(x) {
     
     <div id="main-content">
     <h1>Pick and Chews</h1>
-    <form action="#" id="find-restaurant-form">
         <label>Enter a location</label><br>
         <input type="text" name="location" placeholder="Location" id="location" required><br>
     <br>then...<br>
-    <button type="submit" onclick="functionPlzWork()" id="find-restaurant">Find Restaurants!</button>
+    <button onclick="functionPlzWork()" id="find-restaurant">Find Restaurants!</button>
     <br><br>Or modify your searching using<br>
         <h3>Filters</h3>
         <div id="filters-div">
@@ -174,10 +173,11 @@ function functionPlzWork() {
     console.log("hii");
   
     /************************** beginning ***************************/
-    const restaurantForm = document.querySelector("#find-restaurant-form");
-    restaurantForm.addEventListener("submit", function(event) {
+    const restaurantButton = document.querySelector("#find-restaurant");
+    restaurantButton.addEventListener("click", function(event) {
       // document.querySelector("body").innerHTML += resultsPage;
-      let locationInput = event.target.location.value;
+      
+      let locationInput = document.querySelector('#location').value;
       
       /* Yelp Api get Data */
       var myurl =
@@ -248,7 +248,6 @@ function functionPlzWork() {
               const iframeEl = document.querySelector("iframe");
               console.log(iframeEl);
               if (iframeEl === null) {
-                debugger;
                 resultsDiv.innerHTML += `
                     <iframe id='iframe' src="${event.target.getAttribute(
                       "url"
@@ -270,11 +269,10 @@ function functionPlzWork() {
 
 function findARestaurant() {
     
-    const restaurantForm = document.querySelector("#find-restaurant-form");
-    restaurantForm.addEventListener('submit', function(event) {
+    const restaurantButton = document.querySelector("#find-restaurant");
+    restaurantButton.addEventListener('click', function(event) {
 
-        let locationInput = event.target.location.value;
-        console.log(event.target.location.value);
+        let locationInput = document.querySelector('#location').value;
 
       /* Yelp Api get Data */
       var myurl =
