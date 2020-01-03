@@ -339,9 +339,9 @@ function findARestaurant() {
               const iframeEl = document.querySelector("iframe");
               console.log(iframeEl);
               if (iframeEl === null) {
-                debugger
+                // debugger
                 resultsDiv.innerHTML += `
-                  <iframe id='iframe' src="${event.target.getAttribute('url')}"></iframe>
+                  <iframe id='iframe' src="${event.target.getAttribute('url')}" width="120%" height="1000px"></iframe>
                 `;
               } else {
                 // console.log(event.target.getAttribute("url");
@@ -426,7 +426,7 @@ function findARestaurant() {
             }
 
             fetch('http://127.0.0.1:3000/users/' + `${currentUserId}`, deleteObj)
-            debugger
+            // debugger
             location.reload();
         })
     }
