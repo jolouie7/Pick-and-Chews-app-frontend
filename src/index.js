@@ -34,7 +34,7 @@ function myFunction(x) {
     </div>
     
     <div id="main-content">
-    <h1>Pick and Chews</h1>
+    <h1 id="main-logo">Pick and Chews</h1>
         <label>Enter a location</label><br>
         <input type="text" name="location" placeholder="Where would you like to eat?" id="location" required><br>
     <br>then...<br><br>
