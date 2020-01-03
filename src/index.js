@@ -4,18 +4,16 @@ function myFunction(x) {
     let navBar = document.getElementById("mySidenav");
     let mainBar = document.getElementById("main")
     
-    if(navBar.style.display === "block") {
+    if (navBar.style.display === "block") {
         navBar.style.display = "none";
         navBar.style.width = "0";
         mainBar.style.marginLeft = "0";
-    }
- 
-    else {
+    } else {
         navBar.style.display = "block";
         mainBar.style.marginLeft = "250px";
         setTimeout(function() {navBar.style.width = "250px"}, 15);
     }
-  }
+}
 
   /* main page */
   const renderMainPage = `
@@ -41,7 +39,7 @@ function myFunction(x) {
         <label>Enter a location</label><br>
         <input type="text" name="location" placeholder="Location" id="location" required><br>
     <br>then...<br>
-    <button type="submit" id="find-restaurant">Find Restaurants!</button>
+    <button type="submit" onclick="functionPlzWork()" id="find-restaurant">Find Restaurants!</button>
     <br><br>Or modify your searching using<br>
         <h3>Filters</h3>
         <div id="filters-div">
@@ -72,17 +70,23 @@ function myFunction(x) {
             </div>
             <br>
         </div>
+        <div id="results">
+        <h1>Your Results!</h1>   
+      </div>
     </div>
         
 </div>
         `;
         
-
+// ------------------------------------------------CHANGES BEGIN--------------------------
 /* Login */
+
 const loginForm = document.querySelector("#login");
 const loginPage = document.querySelector("#login-page");
-loginForm.addEventListener("submit", function(e) {
-//   ć
+loginForm.addEventListener("submit", function(event) {
+    // loginPage.style.display = "none";
+    // event.preventDefault();
+    
     let usernameValue = event.target.username.value;
 
     fetch('http://127.0.0.1:3000/users')
@@ -164,24 +168,113 @@ function priceFilter(){
         console.log(priceInput);
     });
 }
-
-
+// -------------------------------------------------
+function functionPlzWork() {
+  
+    console.log("hii");
+  
+    /************************** beginning ***************************/
+    const restaurantForm = document.querySelector("#find-restaurant-form");
+    restaurantForm.addEventListener("submit", function(event) {
+      // document.querySelector("body").innerHTML += resultsPage;
+      let locationInput = event.target.location.value;
+      
+      /* Yelp Api get Data */
+      var myurl =
+       'https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?radius=' + `${distanceInput}` + '&open_now=' + `${openNowInput}` + '&sort_by rating=' + `${ratingInput}` + '&price=' + `${priceInput}` + '&location=' + `${locationInput}`;
+      // import { config } from "config.js";
+      const apiKey = config.API_KEY;
+  
+      let newPromise = Promise.resolve("hey");
+      newPromise
+        .then(() => {
+          $.ajax({
+            url: myurl,
+            headers: {
+              Authorization: `Bearer ${apiKey}`,
+              "Retry-After": 0
+            },
+            method: "GET",
+            dataType: "json",
+            success: function(data) {
+              // Grab the results from the API JSON return
+              const totalResults = data.businesses;
+              console.log(data);
+              if (totalResults.length > 0) {
+                resultsDiv = document.querySelector("#results");
+                resultsDiv.innerHTML = `
+                  <div id="results">
+                    <h1>Your Results!</h1>   
+                  </div>`;
+                for (let i = 0; i < 3; i++) {
+                  let randomRestaurant =
+                    totalResults[Math.floor(Math.random() * totalResults.length)];
+                  let restaurantImage = randomRestaurant.image_url;
+  
+                  let resultRestaurant = document.createElement("div");
+                  resultRestaurant.id = `found-restaurant`;
+                  resultRestaurant.innerHTML = `
+                      <br><img src="${restaurantImage}" width="250px" height="150px">
+                      <h2><a url="${randomRestaurant.url}" class="yelp-url-${i} place" target='iframe'>${randomRestaurant.name}</a></h2>
+                      <p>Category: ${randomRestaurant.categories[0].title}</p>
+                      <p>Rating: ${randomRestaurant.rating} stars</p>
+                      <p>Price: ${randomRestaurant.price}</p>
+                      <p>Location: ${randomRestaurant.location.address1}, ${randomRestaurant.location.address2}<br>${randomRestaurant.location.city}, ${randomRestaurant.location.zip_code}</p>
+                      <p>Phone number: ${randomRestaurant.display_phone}</p>
+                      `;
+                  
+                  // console.log(resultRestaurant)
+                  resultsDiv.append(resultRestaurant);
+                }
+              } else {
+                //   let resultsDiv = document.querySelector("#results");
+                $("#results").append(
+                  "<h5>We discovered no results! Edit your location and try again.</h5>"
+                );
+              }
+              // clickTheFindRestaurantButtonAgain();
+            }
+          });
+        })
+        .then(() => {
+          // wait for the above request to finish, then add event listener
+          document.body.addEventListener("click", event => {
+            event.preventDefault();
+            if (event.target.classList.contains("place")) {
+              resultsDiv = document.querySelector("#results");
+              console.log("I work the second time!");
+              // console.log(document.querySelector(`.yelp-url-${i}`).href);
+  
+              const iframeEl = document.querySelector("iframe");
+              console.log(iframeEl);
+              if (iframeEl === null) {
+                debugger;
+                resultsDiv.innerHTML += `
+                    <iframe id='iframe' src="${event.target.getAttribute(
+                      "url"
+                    )}"></iframe>
+                  `;
+              } else {
+                // console.log(event.target.getAttribute("url");
+                iframeEl.src = event.target.getAttribute("url");
+              }
+            }
+          });
+        });
+    });
+    /*************************** end ***************************/
+  
+    console.log("plz work")
+  }
+  
 
 function findARestaurant() {
-    const resultsPage = `
-    <div id="results">
-    <h1>Your Results!</h1>   
-    </div>
-    `;
     
     const restaurantForm = document.querySelector("#find-restaurant-form");
     restaurantForm.addEventListener('submit', function(event) {
 
         let locationInput = event.target.location.value;
-        console.log(event.target.location.value)
-        
-        document.querySelector("#main").innerHTML += resultsPage;
-
+        console.log(event.target.location.value);
 
       /* Yelp Api get Data */
       var myurl =
@@ -189,6 +282,9 @@ function findARestaurant() {
       // import { config } from "config.js";
       const apiKey = config.API_KEY;
       console.log(myurl)
+
+      let newPromise = Promise.resolve("hey")
+        newPromise.then(() => {
       $.ajax({
       url: myurl,
       headers: {
@@ -206,29 +302,56 @@ function findARestaurant() {
             for(let i=0; i < 3; i++){
                 let randomRestaurant = totalResults[Math.floor ( Math.random() * totalResults.length)];
                 let restaurantImage = randomRestaurant.image_url;
-                // debugger
-                let resultRestaurant = document.createElement('div');
-                resultRestaurant.id = "foundRestaurant";
-                    resultRestaurant.innerHTML = `
+             
+                let resultRestaurant = document.createElement("div");
+                resultRestaurant.id = `found-restaurant`;
+                resultRestaurant.innerHTML = `
                     <br><img src="${restaurantImage}" width="250px" height="150px">
-                    <h2><a href="${randomRestaurant.url}">${randomRestaurant.name}</a></h2>
+                    <h2><a url="${randomRestaurant.url}" class="yelp-url-${i} place" target='iframe'>${randomRestaurant.name}</a></h2>
                     <p>Category: ${randomRestaurant.categories[0].title}</p>
                     <p>Rating: ${randomRestaurant.rating} stars</p>
                     <p>Price: ${randomRestaurant.price}</p>
                     <p>Location: ${randomRestaurant.location.address1}, ${randomRestaurant.location.address2}<br>${randomRestaurant.location.city}, ${randomRestaurant.location.zip_code}</p>
                     <p>Phone number: ${randomRestaurant.display_phone}</p>
                     `;
-                    let resultsDiv = document.querySelector("#results");
-                    resultsDiv.appendChild(resultRestaurant);
-                };
-          
-          } else {
+                resultsDiv = document.querySelector("#results");
+                resultsDiv.appendChild(resultRestaurant);
+              }
+            } else {
               //   let resultsDiv = document.querySelector("#results");
-              $("#results").append("<h5>We discovered no results! Edit your location and try again.</h5>");
+              $("#results").append(
+                "<h5>We discovered no results! Edit your location and try again.</h5>"
+              );
+            }
+            // clickTheFindRestaurantButtonAgain();
           }
-          
-      }
-    })
+        });
+      })
+      .then(() => {
+        // wait for the above request to finish, then add event listener
+        document.body.addEventListener('click', (event) => {
+          event.preventDefault();
+          if (
+            event.target.classList.contains("place")
+          ) {
+              resultsDiv = document.querySelector("#results");
+              console.log("I work the second time!")
+              // console.log(document.querySelector(`.yelp-url-${i}`).href);
+
+              const iframeEl = document.querySelector("iframe");
+              console.log(iframeEl);
+              if (iframeEl === null) {
+                debugger
+                resultsDiv.innerHTML += `
+                  <iframe id='iframe' src="${event.target.getAttribute('url')}"></iframe>
+                `;
+              } else {
+                // console.log(event.target.getAttribute("url");
+                iframeEl.src = event.target.getAttribute("url");
+              }
+          }
+        })
+      });
   })
   displayUserProfile();
   displayHomepage();
