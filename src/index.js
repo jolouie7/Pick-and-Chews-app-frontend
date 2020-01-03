@@ -38,7 +38,7 @@ function myFunction(x) {
         <label>Enter a location</label><br>
         <input type="text" name="location" placeholder="Where would you like to eat?" id="location" required><br>
     <br>then...<br><br>
-    <button onclick="functionPlzWork()" id="find-restaurant">Find Restaurants!</button>
+    <button id="find-restaurant">Find Restaurants!</button>
     <br><br>Or modify your searching using<br>
         <h3>Filters</h3>
         <div id="filters-div">
@@ -126,7 +126,8 @@ loginForm.addEventListener("submit", function(event) {
 
 
     document.querySelector("body").innerHTML = renderMainPage;
-  findARestaurant();
+  // findARestaurant();
+  functionPlzWork();
   displayUserProfile();
   displayHomepage();
   displayLastVisited();
@@ -201,7 +202,7 @@ function functionPlzWork() {
   
     /************************** beginning ***************************/
     const restaurantButton = document.querySelector("#find-restaurant");
-    restaurantButton.addEventListener("click", function(event) {
+    restaurantButton.addEventListener("click", function findingRestaurant(event) {
       // document.querySelector("body").innerHTML += resultsPage;
       
       let locationInput = document.querySelector('#location').value;
@@ -227,6 +228,7 @@ function functionPlzWork() {
               // Grab the results from the API JSON return
               const totalResults = data.businesses;
               console.log(data);
+              // debugger
               if (totalResults.length > 0) {
                 resultsDiv = document.querySelector("#results");
                 resultsDiv.innerHTML = `
@@ -254,6 +256,7 @@ function functionPlzWork() {
                 //   console.log(restaurantArray)
                   // console.log(resultRestaurant)
                   resultsDiv.append(resultRestaurant);
+                  document.querySelector("#find-restaurant").setAttribute("onclick", "findARestaurant()");
                 }
               } else {
                 //   let resultsDiv = document.querySelector("#results");
@@ -278,9 +281,7 @@ function functionPlzWork() {
               console.log(iframeEl);
               if (iframeEl === null) {
                 resultsDiv.innerHTML += `
-                    <iframe id='iframe' src="${event.target.getAttribute(
-                      "url"
-                    )}"></iframe>
+                    <iframe id='iframe' src="${event.target.getAttribute("url")}" width="100%" height="1000px"></iframe>
                   `;
               } else {
                 // console.log(event.target.getAttribute("url");
@@ -297,11 +298,18 @@ function functionPlzWork() {
   
 
 function findARestaurant() {
-    
-    const restaurantButton = document.querySelector("#find-restaurant");
-    restaurantButton.addEventListener('click', function(event) {
+  // this if statement is to get rid of the console error. We are removing a click event before it is rendered
+  // ***************************** THIS IF STATEMENT DOESN'T WORK! PLZ FIX *****************************
+  // if(document.querySelector("#find-restaurant").hasAttribute("onclick") === true) {
+    document.querySelector("#find-restaurant").removeEventListener("click", findingRestaurant);
+  // }
 
-        let locationInput = document.querySelector('#location').value;
+    // ************************ Can possibly delete ************************************
+    // const restaurantButton = document.querySelector("#find-restaurant");
+    // restaurantButton.addEventListener('click', function(event) {
+    // ************************ Can possibly delete ************************************
+
+      let locationInput = document.querySelector('#location').value;
 
       /* Yelp Api get Data */
       var myurl =
@@ -352,7 +360,6 @@ function findARestaurant() {
                 "<h5>We discovered no results! Edit your location and try again.</h5>"
                 );
             }
-            // clickTheFindRestaurantButtonAgain();
           }
         });
       })
@@ -370,9 +377,9 @@ function findARestaurant() {
               const iframeEl = document.querySelector("iframe");
               console.log(iframeEl);
               if (iframeEl === null) {
-                debugger
+                // debugger
                 resultsDiv.innerHTML += `
-                  <iframe id='iframe' src="${event.target.getAttribute('url')}"></iframe>
+                  <iframe id='iframe' src="${event.target.getAttribute('url')}" width="100%" height="1000px"></iframe>
                 `;
               } else {
                 // console.log(event.target.getAttribute("url");
@@ -394,9 +401,9 @@ function findARestaurant() {
         //     })
         // })
 
-
+        
     });
-})
+// })
 displayUserProfile();
 displayHomepage();
 displayLastVisited();
@@ -521,22 +528,22 @@ function saveRestaurants(){
         })
     }
 
-    function deleteUser() {
-        document.querySelector('#deleteUser').addEventListener('click', function (e) {
-            console.log("hey");
+function deleteUser() {
+    document.querySelector('#deleteUser').addEventListener('click', function (e) {
+        console.log("hey");
 
-            const userInfo = {
-                username: currentUserName
-            }
-            
-            let deleteObj = {
-                method: "DELETE",
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify(userInfo)
-            }
+        const userInfo = {
+            username: currentUserName
+        }
+        
+        let deleteObj = {
+            method: "DELETE",
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify(userInfo)
+        }
 
             fetch('http://127.0.0.1:3000/users/' + `${currentUserId}`, deleteObj)
             location.reload();
@@ -584,7 +591,8 @@ function displayHomepage() {
             </div>
             </div>
             </div>`
-        document.querySelector("#main-content").innerHTML = rerenderMainPage;
+        // document.querySelector("#main-content").innerHTML = rerenderMainPage;
+        mainDiv.innerHTML = rerenderMainPage;
         findARestaurant();
     })
 };
@@ -592,7 +600,7 @@ function displayHomepage() {
         
 function displayLastVisited() {
     document.querySelector('#last-visited').addEventListener('click', function(e) {
-        const mainDiv = document.querySelector("#main-content")
+        // const mainDiv = document.querySelector("#main-content")
         const renderLastVisited = `
             <h1>Last Visited</h1>
             `;
@@ -602,7 +610,7 @@ function displayLastVisited() {
     
 function displayFavorited() {
     document.querySelector('#top-favorited').addEventListener('click', function(e) {
-        const mainDiv = document.querySelector("#main-content")
+        // const mainDiv = document.querySelector("#main-content")
         const renderLastVisited = `
             <h1>Favorited Restaurants</h1>
             `;
