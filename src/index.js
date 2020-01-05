@@ -39,9 +39,9 @@ function myFunction(x) {
         <input type="text" name="location" placeholder="Where would you like to eat?" id="location" required><br>
     <br>then...<br><br>
     <button id="find-restaurant">Find Restaurants!</button>
-    <br><br>Or modify your searching using<br>
-        <h3>Filters</h3>
-        <div id="filters-div">
+    <br><br>Or modify your searching using<br><br>
+    <div id="filters-div">
+        <h1><u>Filters</u></h1>
             <h4>Category</h4>
             <input type="text" name="category" placeholder="search for breweries, acai bowls, etc." id="category"><br>
             <h4>Distance</h4>
@@ -71,8 +71,9 @@ function myFunction(x) {
             </div>
             <br>
         </div>
+        <br><br><br>
         <div id="results">
-        <h1>Your Results!</h1>   
+        <h1><u>Your Results!</u></h1>   
       </div>
     </div>
         
@@ -235,7 +236,7 @@ function functionPlzWork() {
                   <div id="results">
                     <h1>Your Results!</h1>   
                   </div>`;
-                //   restaurantArray = []
+                  restaurantArray = []
                 for (let i = 0; i < 3; i++) {
                   let randomRestaurant =
                     totalResults[Math.floor(Math.random() * totalResults.length)];
@@ -252,9 +253,9 @@ function functionPlzWork() {
                       <p>Location: ${randomRestaurant.location.address1}, ${randomRestaurant.location.address2}<br>${randomRestaurant.location.city}, ${randomRestaurant.location.zip_code}</p>
                       <p>Phone number: ${randomRestaurant.display_phone}</p>
                       `;
-                //   restaurantArray.push(randomRestaurant.name)
-                //   console.log(restaurantArray)
-                  // console.log(resultRestaurant)
+                  restaurantArray.push(randomRestaurant.name)
+                  console.log(restaurantArray)
+                  console.log(resultRestaurant)
                   resultsDiv.append(resultRestaurant);
                   document.querySelector("#find-restaurant").setAttribute("onclick", "findARestaurant()");
                 }
@@ -556,45 +557,52 @@ function displayHomepage() {
         loginPage.style.display = "none";
         const rerenderMainPage = `
         <div id="main-content">
-        <h1>Pick and Chews</h1>
-        <button id="find-restaurant">Find Restaurants</button><br><br><br>
-        <h3>Filters</h3>
-        <div id="filters-div">
-        <div>
-        <h4>Distance</h4>
-                <button type="button">5 Miles</button>
-                <button type="button">10 Miles</button>
-                <button type="button">20 Miles</button>
-                </div>
-            <div>
-            <!-- Remove this h4 later -->
+    <h1 id="main-logo">Pick and Chews</h1>
+        <label>Enter a location</label><br>
+        <input type="text" name="location" placeholder="Where would you like to eat?" id="location" required><br>
+    <br>then...<br><br>
+    <button id="find-restaurant">Find Restaurants!</button>
+    <br><br>Or modify your searching using<br><br>
+    <div id="filters-div">
+        <h1><u>Filters</u></h1>
+            <h4>Category</h4>
+            <input type="text" name="category" placeholder="search for breweries, acai bowls, etc." id="category"><br>
+            <h4>Distance</h4>
+            <div id="distance">
+                <button type="button" value="8100">5 Miles</button>
+                <button type="button" value="16100">10 Miles</button>
+                <button type="button" value="25000">15 Miles</button>
+            </div>
             <h4>Only Restaurants that are open now</h4>
-            <button type="button">Open now</button>
+            <div id="open-now">
+                <button type="button" value="true">Open now</button>
             </div>
-            <div>
             <h4>Star Ratings</h4>
-            <button type="button">1 Star</button>
-            <button type="button">2 Star</button>
-            <button type="button">3 Star</button>
-            <button type="button">4 Star</button>
-            <button type="button">5 Star</button>
+            <div id="ratings">
+                <button type="button" value="1">1 Star</button>
+                <button type="button" value="2">2 Star</button>
+                <button type="button" value="3">3 Star</button>
+                <button type="button" value="4">4 Star</button>
+                <button type="button" value="5">5 Star</button>
             </div>
-            <div>
             <h4>Price</h4>
-            <button type="button">$</button>
-            <button type="button">$$</button>
-            <button type="button">$$$</button>
-            <button type="button">$$$$</button>
+            <div id="price">
+                <button type="button" value="1">$</button>
+                <button type="button" value="2">$$</button>
+                <button type="button" value="3">$$$</button>
+                <button type="button" value="4">$$$$</button>
             </div>
             <br>
-            </div>
-            </div>
-            </div>
-            </div>`
+        </div>
+        <br><br><br>
+        <div id="results">
+        <h1><u>Your Results!</u></h1>   
+      </div>
+    </div>`
         // document.querySelector("#main-content").innerHTML = rerenderMainPage;
         const mainDiv = document.querySelector("#main-content");
         mainDiv.innerHTML = rerenderMainPage;
-        findARestaurant();
+        functionPlzWork();
     })
 };
         
@@ -602,10 +610,15 @@ function displayHomepage() {
 function displayLastVisited() {
     document.querySelector('#last-visited').addEventListener('click', function(e) {
         const mainDiv = document.querySelector("#main-content");
-        const renderLastVisited = `
-            <h1>Last Visited</h1>
+        let lastVisited = `
+            <div><h1>Last Visited</h1></div>
             `;
-        mainDiv.innerHTML = renderLastVisited;
+        mainDiv.innerHTML = lastVisited;
+        restaurantArray.forEach(element => {
+            let resultsFromButton = document.createElement("li")
+            resultsFromButton.innerText = element
+            mainDiv.append(resultsFromButton)
+        })
     })
 };
     
