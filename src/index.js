@@ -128,7 +128,7 @@ loginForm.addEventListener("submit", function(event) {
 
     document.querySelector("body").innerHTML = renderMainPage;
   // findARestaurant();
-  functionPlzWork();
+  initialFindRestaurant();
   displayUserProfile();
   displayHomepage();
   displayLastVisited();
@@ -197,7 +197,7 @@ function categoryFilter(){
 }
 
 // -------------------------------------------------
-function functionPlzWork() {
+function initialFindRestaurant() {
   
     console.log("hii");
   
@@ -602,7 +602,7 @@ function displayHomepage() {
         // document.querySelector("#main-content").innerHTML = rerenderMainPage;
         const mainDiv = document.querySelector("#main-content");
         mainDiv.innerHTML = rerenderMainPage;
-        functionPlzWork();
+        initialFindRestaurant();
     })
 };
         
