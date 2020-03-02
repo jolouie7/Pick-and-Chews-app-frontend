@@ -1,5 +1,5 @@
 /* Nav Bar */
-function myFunction(x) {
+function styleFunction(x) {
     x.classList.toggle("change");
     let navBar = document.getElementById("mySidenav");
     let mainBar = document.getElementById("main")
@@ -27,7 +27,7 @@ function myFunction(x) {
     </div>
     
     <!-- Use any element to open the sidenav -->
-    <div class="hamburger-icon" onclick="myFunction(this)">
+    <div class="hamburger-icon" onclick="styleFunction(this)">
     <div class="bar1"></div>
     <div class="bar2"></div>
     <div class="bar3"></div>
@@ -605,7 +605,6 @@ function displayHomepage() {
         initialFindRestaurant();
     })
 };
-        
         
 function displayLastVisited() {
     document.querySelector('#last-visited').addEventListener('click', function(e) {
