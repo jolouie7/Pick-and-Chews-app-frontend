@@ -1,0 +1,19 @@
+{
+  "name": "pick-and-chews-frontend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jolouie7/Pick-and-Chews-app-frontend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jolouie7/Pick-and-Chews-app-frontend/issues"
+  },
+  "homepage": "https://github.com/jolouie7/Pick-and-Chews-app-frontend#readme"
+}
