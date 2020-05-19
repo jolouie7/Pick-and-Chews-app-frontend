@@ -93,16 +93,17 @@ loginForm.addEventListener("submit", function(event) {
 
   let usernameValue = event.target.username.value;
 
-  fetch("http://127.0.0.1:3000/users").then(function(response) {
-    response.json().then(function(results) {
-      results.forEach(element => {
-        if (element.username == usernameValue) {
-          currentUserId = element.id;
-          currentUserName = element.username;
-        }
-      });
-    });
-  });
+  // what is this fetch doing? is it checking to see if the user exists already? maybe could just use .find instead
+  // fetch("http://127.0.0.1:3000/users").then(function(response) {
+  //   response.json().then(function(results) {
+  //     results.forEach(element => {
+  //       if (element.username == usernameValue) {
+  //         currentUserId = element.id;
+  //         currentUserName = element.username;
+  //       }
+  //     });
+  //   });
+  // });
 
   let userInfo = {
     username: usernameValue
@@ -220,7 +221,7 @@ function initialFindRestaurant() {
     // import { config } from "config.js";
     const apiKey = config.API_KEY;
 
-    let newPromise = Promise.resolve("hey");
+    let newPromise = Promise.resolve("promise resolved");
     newPromise
       .then(() => {
         $.ajax({
@@ -327,7 +328,7 @@ function findARestaurant() {
     `${categoryInput}`;
   const apiKey = config.API_KEY;
 
-  let newPromise = Promise.resolve("hey");
+  let newPromise = Promise.resolve("promise resolved second time");
   newPromise
     .then(() => {
       $.ajax({
