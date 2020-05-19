@@ -25,12 +25,12 @@ Ruby on Rails, SQLite3, Javascript
 
 ### Yelp Account Settings
 
-This application should give you a ready-made starting point for keeping an inventory checklist of all of your household items. Before we begin, we need to collect
+This application should give you a ready-made starting point for finding restaurants around the world. Before we begin, we need to collect
 all the config values we need to run the application:
 
 | Config&nbsp;Value | Description                                                                                                                                                  |
 | :---------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| APIt&nbsp;Key  | Your primary Yelp account identifier - find this in [Manage App](https://www.yelp.com/login?return_url=%2Fdevelopers%2Fv3%2Fmanage_app).        |
+| API&nbsp;Key  | Your primary Yelp account identifier - find this in [Manage App](https://www.yelp.com/login?return_url=%2Fdevelopers%2Fv3%2Fmanage_app).        |
 
 
 ## Installation
